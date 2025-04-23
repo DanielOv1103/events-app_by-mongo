@@ -18,3 +18,14 @@ def get_event_endpoint(event_id: str):
 @router.get("/", response_model=list[Event])
 def list_events_endpoint():
     return list_events()
+
+@router.delete("/{event_id}")
+def delete_event_endpoint(event_id: str):
+    result = delete_event(event_id)  # Llama a la función delete_event del servicio
+    if result is None:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return {"message": "Evento eliminado con éxito"}
+
+@router.put("/{event_id}", response_model=Event)
+def update_event_endpoint(event_id: str, event: Event):
+    return update_event(event_id, event)

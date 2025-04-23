@@ -41,4 +41,20 @@ async function create(event) {
   return JSON.parse(text)
 }
 
-export default { list, create }
+
+/**
+ * Elimina un evento por ID
+ * @param {string} id ID del evento
+ * @returns {Promise<void>}
+ */
+async function remove(id) {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE'
+  })
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(errorText || 'Error al eliminar evento')
+  }
+}
+
+export default { list, create, remove  }

@@ -5,10 +5,10 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, MapPin, Edit2, Trash2 } from "lucide-react"
+import { Calendar, MapPin, Edit2, Trash2 } from "lucide-react"
 
 
-const CardEvents = ({ event }) => {
+const CardEvents = ({ event, onEdit, onDelete }) => {
     // Si event es undefined/null, muestra un mensaje o retorna null
     if (!event) {
         return <div className="bg-white rounded-lg shadow p-4">Evento no disponible</div>;
@@ -45,7 +45,7 @@ const CardEvents = ({ event }) => {
                 </CardContent>
                 <CardFooter className="flex justify-between pt-0">
                     <Button variant="outline" size="sm"
-                    // onClick={onEdit}
+                    onClick={onEdit}
                     >
                         <Edit2 className="h-4 w-4 mr-2" />
                         Editar
@@ -54,7 +54,7 @@ const CardEvents = ({ event }) => {
                         variant="outline"
                         size="sm"
                         className="text-red-500 hover:text-red-700 hover:border-red-200"
-                    // onClick={onDelete}
+                    onClick={onDelete}
                     >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Eliminar
