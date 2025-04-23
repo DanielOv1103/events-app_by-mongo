@@ -1,4 +1,5 @@
 import { NavBar } from "../modules/index"
+import { CardEvents } from "../components/index"
 import React, { useState, useEffect } from 'react'
 import eventService from '../api/eventService'
 
@@ -23,6 +24,8 @@ export default function Events() {
             })
             .finally(() => setLoading(false))
     }, [])
+
+    console.log(events)
 
     const [form, setForm] = useState({
         name: '',
@@ -75,20 +78,9 @@ export default function Events() {
             <NavBar />
             <div className="min-h-screen bg-gray-100 p-4">
                 <h1 className="text-3xl font-bold text-center mb-6">Lista de Eventos</h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="flex flex-wrap gap-6">
                     {events.map(evt => (
-                        <div key={evt.id} className="bg-white rounded-lg shadow p-4">
-                            <h2 className="text-xl font-semibold mb-2">{evt.name}</h2>
-                            <p className="text-gray-600 mb-4">
-                                {evt.description || 'Sin descripción'}
-                            </p>
-                            <p className="text-gray-500 text-sm">
-                                {new Date(evt.start_time).toLocaleString()} - {new Date(evt.end_time).toLocaleString()}
-                            </p>
-                            {evt.location && (
-                                <p className="text-gray-500 text-sm mt-1">Ubicación: {evt.location}</p>
-                            )}
-                        </div>
+                        <CardEvents key={evt.id} event={evt} />
                     ))}
                 </div>
             </div>
