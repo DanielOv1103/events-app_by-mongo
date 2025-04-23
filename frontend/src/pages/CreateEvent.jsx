@@ -6,6 +6,7 @@ function formatToISO(dateLocal) {
   return new Date(dateLocal).toISOString()
 }
 
+
 export default function CreateEvent() {
   const [form, setForm] = useState({
     name: '',

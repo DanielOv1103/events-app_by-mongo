@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Home from './pages/Home'          // listEvents y grid de cards
-import CreateEvent from './pages/CreateEvent'
+import Home from './app/Home'          // listEvents y grid de cards
+import Events from './app/events'
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <div className="px-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/create" element={<CreateEvent />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </div>
     </BrowserRouter>
