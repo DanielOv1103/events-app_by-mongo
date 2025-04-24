@@ -1,11 +1,13 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './app/Home'          // listEvents y grid de cards
 import Events from './app/events'
+import { NavBar } from "@/modules/index"
 
 function App() {
   return (
     <BrowserRouter>
+      <NavBar />
       <div className="px-4">
         <Routes>
           <Route path="/" element={<Home />} />
