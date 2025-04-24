@@ -2,6 +2,7 @@ import eventService from '../../api/eventService'
 import { CreateEvent } from "../../modules/index"
 import { CardEvents } from "../../components/index"
 import { Button } from "@/components/ui/button"
+import { PlusCircle } from "lucide-react"
 import React, { useState, useEffect } from 'react'
 
 const EventsComponent = () => {
@@ -58,13 +59,13 @@ const EventsComponent = () => {
         try {
             // Desestructurar para asegurarnos de no enviar el _id
             const { _id, ...eventWithoutId } = eventData;
-    
+
             const formattedEvent = {
                 ...eventWithoutId,
                 start_time: new Date(eventData.start_time).toISOString(),
                 end_time: new Date(eventData.end_time).toISOString(),
             }
-    
+
             await eventService.createEvent(formattedEvent)
             setSuccess('Evento creado correctamente')
             fetchEvents()
@@ -91,21 +92,22 @@ const EventsComponent = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4">
-            <div>
+        <div className="container mx-auto py-8 px-4">
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold tracking-tight">Eventos Destacados</h1>
                 <Button
                     onClick={handleOpenCreateForm}
-                    className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700"
+                    className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 transition-all text-white duration-300"
                 >
-                    Crear Nuevo Evento
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Nuevo Evento
                 </Button>
             </div>
-            <h1 className="text-3xl font-bold text-center mb-6">Lista de Eventos</h1>
 
             {loading ? (
                 <p className="text-center">Cargando eventos...</p>
             ) : (
-                <div className="flex flex-wrap gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {events.map(evt => (
                         <CardEvents
                             key={evt._id}
