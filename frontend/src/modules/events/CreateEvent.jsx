@@ -98,7 +98,7 @@ export default function CreateEvent({ event, onSave, onCancel }) {
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="Conferencia">Conferencia</SelectItem>
                 <SelectItem value="Taller">Taller</SelectItem>
                 <SelectItem value="Concierto">Concierto</SelectItem>
