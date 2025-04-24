@@ -16,31 +16,47 @@ async function list() {
   return response.json()
 }
 
-/**
- * Crea un nuevo evento.
- * @param {Object} event Datos del evento
- * @returns {Promise<Object>} Evento creado
- */
-async function create(event) {
-  // Incluimos _id como null para ajustar el modelo Pydantic en backend
-  const payload = { _id: null, ...event }
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  const text = await response.text()
-  if (!response.ok) {
-    try {
-      const errorData = JSON.parse(text)
-      throw new Error(errorData.detail || JSON.stringify(errorData))
-    } catch {
-      throw new Error(text || 'Error al crear evento')
+// Crear evento
+export async function createEvent(eventData) {
+  try {
+    const response = await fetch(`${API_URL}/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Error al crear evento');
     }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Create Error:', error);
+    throw new Error(error.message || 'Error de conexión');
   }
-  return JSON.parse(text)
 }
 
+// Actualizar evento
+export async function updateEvent(eventId, eventData) {
+  try {
+    const response = await fetch(`${API_URL}/${encodeURIComponent(eventId)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Error al actualizar evento');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Update Error:', error);
+    throw new Error(error.message || 'Error de conexión');
+  }
+}
 
 /**
  * Elimina un evento por ID
@@ -48,13 +64,19 @@ async function create(event) {
  * @returns {Promise<void>}
  */
 async function remove(id) {
+  if (!id || typeof id !== 'string') {
+    console.error("ID inválido:", id);
+    throw new Error("ID del evento no definido o inválido");
+  }
+
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'DELETE'
-  })
+  });
+
   if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(errorText || 'Error al eliminar evento')
+    const errorText = await response.text();
+    throw new Error(errorText || 'Error al eliminar evento');
   }
 }
 
-export default { list, create, remove  }
+export default { list, remove, updateEvent, createEvent }

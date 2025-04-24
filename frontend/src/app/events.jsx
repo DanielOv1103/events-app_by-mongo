@@ -48,8 +48,9 @@ export default function Events() {
     }
 
     const handleDeleteEvent = async (evt) => {
+        console.log(evt)
         try {
-            await eventService.remove(evt.id)
+            await eventService.remove(evt._id)
             fetchEvents()
         } catch (err) {
             setError(err.message)
@@ -58,7 +59,7 @@ export default function Events() {
             setCurrentEvent(null)
         }
     }
-    
+
 
     const handleChange = e => {
         const { name, value } = e.target
@@ -67,11 +68,11 @@ export default function Events() {
 
     const handleSaveEvent = async (eventData) => {
         try {
-            if (eventData.id) {
-                await eventService.update(eventData.id, eventData)
+            if (eventData._id) {
+                await eventService.updateEvent(eventData._id, eventData)
                 setSuccess("Evento actualizado correctamente")
             } else {
-                await eventService.create(eventData)
+                await eventService.createEvent(eventData)
                 setSuccess("Evento creado correctamente")
             }
             fetchEvents()
@@ -94,11 +95,11 @@ export default function Events() {
                 <h1 className="text-3xl font-bold text-center mb-6">Lista de Eventos</h1>
                 <div className="flex flex-wrap gap-6">
                     {events.map(evt => (
-                        <CardEvents key={evt.id} event={evt} onEdit={() => handleEditEvent(evt)} onDelete={() => handleDeleteEvent(evt)} />
+                        <CardEvents key={evt._id} event={evt} onEdit={() => handleEditEvent(evt)} onDelete={() => handleDeleteEvent(evt)} />
                     ))}
                 </div>
 
-                {isFormOpen && 
+                {isFormOpen &&
                     <CreateEvent
                         event={currentEvent}
                         onSave={handleSaveEvent}

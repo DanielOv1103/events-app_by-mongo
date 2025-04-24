@@ -19,7 +19,17 @@ export default function CreateEvent({ event, onSave, onCancel }) {
 
   useEffect(() => {
     if (event) {
-      setFormData({ ...event }) // ✅ Aquí ya estará definido
+      // Asegurarse de que todos los valores sean strings válidos para inputs controlados
+      setFormData({
+        name: event.name ?? "",
+        description: event.description ?? "",
+        start_time: event.start_time?.slice(0, 16) ?? "", // datetime-local needs format: YYYY-MM-DDTHH:mm
+        end_time: event.end_time?.slice(0, 16) ?? "",
+        location: event.location ?? "",
+        category: event.category ?? "",
+        image: event.image ?? "",
+        _id: event._id ?? undefined, // lo incluimos por si es actualización
+      })
     }
   }, [event])
 
@@ -35,18 +45,18 @@ export default function CreateEvent({ event, onSave, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
+  
     const eventData = {
-      id: event?.id || null,
+      _id: formData._id ?? undefined,
       name: formData.name,
       description: formData.description,
       start_time: new Date(formData.start_time).toISOString(),
       end_time: new Date(formData.end_time).toISOString(),
       location: formData.location,
       category: formData.category,
-      url_image: formData.image
+      image: formData.image
     }
-
+  
     onSave(eventData)
   }
 
