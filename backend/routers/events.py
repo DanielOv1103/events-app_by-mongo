@@ -25,6 +25,7 @@ def delete_event_endpoint(event_id: str):
 # Crear evento (POST)
 @router.post("/")
 def create_event_endpoint(event: Event):
+    print(event.dict())  
     return create_event(event)
 
 # Actualizar evento (PUT)

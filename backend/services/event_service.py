@@ -6,9 +6,9 @@ import db
 
 def create_event(event: Event) -> Event:
     """Inserta un evento en MongoDB y retorna el modelo con ID asignado."""
-    data = event.dict(by_alias=True, exclude={"id"})  
-    result = db.db["events"].insert_one(data)       
-    event.id = str(result.inserted_id)                 
+    data = event.dict(by_alias=True, exclude={"id"})  # Excluye el campo id, no se debe enviar
+    result = db.db["events"].insert_one(data)  # MongoDB genera automáticamente el _id
+    event.id = str(result.inserted_id)  # Asigna el _id generado por MongoDB
     return event
 
 

@@ -16,26 +16,31 @@ async function list() {
   return response.json()
 }
 
-// Crear evento
-export async function createEvent(eventData) {
-  try {
-    const response = await fetch(`${API_URL}/events/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(eventData)
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || 'Error al crear evento');
+/**
+ * Crea un nuevo evento.
+ * @param {Object} event Datos del evento
+ * @returns {Promise<Object>} Evento creado
+ */
+async function createEvent (event) {
+  // Incluimos _id como null para ajustar el modelo Pydantic en backend
+  const payload = { _id: null, ...event }
+  const response = await fetch(`${API_URL}/events/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  const text = await response.text()
+  if (!response.ok) {
+    try {
+      const errorData = JSON.parse(text)
+      throw new Error(errorData.detail || JSON.stringify(errorData))
+    } catch {
+      throw new Error(text || 'Error al crear evento')
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Create Error:', error);
-    throw new Error(error.message || 'Error de conexión');
   }
+  return JSON.parse(text)
 }
+
 
 
 export async function updateEvent(eventId, eventData) {
