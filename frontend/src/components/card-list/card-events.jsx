@@ -39,7 +39,7 @@ const CardEvents = ({ event, onEdit, onDelete }) => {
                         <div className="flex items-center text-sm text-gray-500">
                             <Calendar className="h-4 w-4 mr-2 text-violet-500" />
                             <span>
-                                {startDateStr} -{endDateStr}
+                                {startDateStr} - {endDateStr}
                             </span>
                         </div>
                         <div className="flex items-center text-sm text-gray-500">
