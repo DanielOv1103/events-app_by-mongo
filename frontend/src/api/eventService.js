@@ -1,14 +1,14 @@
 // src/api/eventService.js
 
 // URL completa de la API
-const API_URL = 'http://127.0.0.1:8000/events'
+const API_URL = 'http://127.0.0.1:8000'
 
 /**
  * Obtiene la lista de eventos.
  * @returns {Promise<Array>} Lista de eventos
  */
 async function list() {
-  const response = await fetch(API_URL)
+  const response = await fetch(`${API_URL}/events`)
   if (!response.ok) {
     const errorText = await response.text()
     throw new Error(errorText || 'Error al obtener los eventos')
@@ -19,7 +19,7 @@ async function list() {
 // Crear evento
 export async function createEvent(eventData) {
   try {
-    const response = await fetch(`${API_URL}/`, {
+    const response = await fetch(`${API_URL}/events/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(eventData)
@@ -37,18 +37,20 @@ export async function createEvent(eventData) {
   }
 }
 
-// Actualizar evento
+
 export async function updateEvent(eventId, eventData) {
   try {
-    const response = await fetch(`${API_URL}/${encodeURIComponent(eventId)}`, {
+
+    const response = await fetch(`${API_URL}/events/${eventId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(eventData)
+      body: JSON.stringify(eventData), // no excluyas _id
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || 'Error al actualizar evento');
+      const errorDetails = await response.json();
+      console.error('Error details:', errorDetails);
+      throw new Error(`Update failed: ${response.statusText}`);
     }
 
     return await response.json();
@@ -57,6 +59,7 @@ export async function updateEvent(eventId, eventData) {
     throw new Error(error.message || 'Error de conexión');
   }
 }
+
 
 /**
  * Elimina un evento por ID
@@ -69,7 +72,7 @@ async function remove(id) {
     throw new Error("ID del evento no definido o inválido");
   }
 
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await fetch(`${API_URL}/events/${id}`, {
     method: 'DELETE'
   });
 

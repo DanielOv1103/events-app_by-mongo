@@ -48,7 +48,6 @@ export default function Events() {
     }
 
     const handleDeleteEvent = async (evt) => {
-        console.log(evt)
         try {
             await eventService.remove(evt._id)
             fetchEvents()
@@ -60,29 +59,35 @@ export default function Events() {
         }
     }
 
-
-    const handleChange = e => {
-        const { name, value } = e.target
-        setForm(prev => ({ ...prev, [name]: value }))
-    }
-
-    const handleSaveEvent = async (eventData) => {
+    const handleCreateEvent = async (eventData) => {
         try {
-            if (eventData._id) {
-                await eventService.updateEvent(eventData._id, eventData)
-                setSuccess("Evento actualizado correctamente")
-            } else {
-                await eventService.createEvent(eventData)
-                setSuccess("Evento creado correctamente")
-            }
-            fetchEvents()
+            const dataToSend = { ...eventData };
+            await eventService.createEvent(dataToSend);
+            setSuccess("Evento creado correctamente");
+            fetchEvents();
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         } finally {
-            setIsFormOpen(false)
-            setCurrentEvent(null)
+            setIsFormOpen(false);
+            setCurrentEvent(null);
+        }
+    };
+
+    const handleSaveEditEvent = async (eventData) => {
+        try {
+            if (!eventData._id) throw new Error("Falta el ID del evento a editar");
+
+            await eventService.updateEvent(eventData._id, eventData);
+            setSuccess("Evento actualizado correctamente");
+            fetchEvents(); // Recargar eventos
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsFormOpen(false);
+            setCurrentEvent(null);
         }
     }
+        ;
 
     if (error) {
         return <div className="text-center text-red-500 mt-10">{error}</div>
@@ -102,7 +107,7 @@ export default function Events() {
                 {isFormOpen &&
                     <CreateEvent
                         event={currentEvent}
-                        onSave={handleSaveEvent}
+                        onSave={handleSaveEditEvent}
                         onCancel={() => setIsFormOpen(false)}
                     />
                 }
