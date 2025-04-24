@@ -9,6 +9,8 @@ class Event(BaseModel):
     start_time: datetime
     end_time: datetime
     location: Optional[str] = None
+    category: Optional[str] = None
+    image: Optional[str] = None
 
     class Config:
         validate_by_name = True
