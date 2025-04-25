@@ -77,7 +77,8 @@ export default function UsersComponent() {
         id: user._id || user.id,
         image: user.image || "",
         status: user.user_active !== false ? "Activo" : "Inactivo", // Considera true por defecto
-        role: user.role || "user"
+        role: user.role || "user",
+        user_active: user.user_active !== false // Asegura valor booleano
     }))
 
     const handleOpenCreateForm = () => {

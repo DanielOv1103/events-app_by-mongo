@@ -159,9 +159,12 @@ const CustomTable = ({
                                             <TableCell key={column.key} className={column.cellClassName || ""}>
                                                 <Badge
                                                     variant="outline"
-                                                    className={`capitalize ${item.active ? "bg-green-100 border-none text-green-800 dark:bg-green-900 dark:text-green-200" : "bg-red-100 border-none text-red-800 dark:bg-red-900 dark:text-red-200"}`}
+                                                    className={`capitalize ${item.user_active !== false ?  // Cambiado a user_active
+                                                            "bg-green-100 border-none text-green-800 dark:bg-green-900 dark:text-green-200" :
+                                                            "bg-red-100 border-none text-red-800 dark:bg-red-900 dark:text-red-200"
+                                                        }`}
                                                 >
-                                                    {item.active ? "Activo" : "Inactivo"}
+                                                    {item.user_active !== false ? "Activo" : "Inactivo"}
                                                 </Badge>
                                             </TableCell>
                                         )
