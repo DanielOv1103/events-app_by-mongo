@@ -11,6 +11,7 @@ class User(BaseModel):
     created_day: datetime
     updated_day: datetime
     role: str
+    user_active: bool = True
     image: Optional[str] = None
     
     class Config:

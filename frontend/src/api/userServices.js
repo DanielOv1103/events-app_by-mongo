@@ -1,6 +1,18 @@
 // URL completa de la API
 const API_URL = 'http://127.0.0.1:8000'
 
+/** 
+ * @returns {Promise<Array>} usuario por id
+ */
+async function getUserById(id) {
+    const response = await fetch(`${API_URL}/users/${id}`)
+    if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(errorText || 'Error al obtener el usuario')
+    }
+    return response.json()
+}
+
 /**
  * Obtiene la lista de usuarios.
  * @returns {Promise<Array>} Lista de usuarios
@@ -45,7 +57,7 @@ export async function updateUser(userId, userData) {
     try {
 
         const response = await fetch(`${API_URL}/users/${userId}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData), // no excluyas _id
         });
@@ -85,4 +97,4 @@ async function remove(id) {
     }
 }
 
-export default { list, remove, updateUser, createUser }
+export default { list, remove, updateUser, createUser, getUserById }

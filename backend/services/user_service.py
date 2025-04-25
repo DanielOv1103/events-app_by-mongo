@@ -3,12 +3,18 @@ from bson import ObjectId
 from models.user import User
 import db  
 
-
 def create_user(user: User) -> User:
     """Inserta un usuario en MongoDB y retorna el modelo con ID asignado."""
-    data = user.dict(by_alias=True, exclude={"id"})  # Excluye el campo id, no se debe enviar
-    result = db.db["users"].insert_one(data)  # MongoDB genera automáticamente el _id
-    user.id = str(result.inserted_id)  # Asigna el _id generado por MongoDB
+    # Convertir el modelo a diccionario incluyendo todos los campos
+    data = user.dict(by_alias=True, exclude={"id"})
+    
+    # Asegurar que user_active esté presente (usando el valor del modelo o True por defecto)
+    data['user_active'] = user.user_active if hasattr(user, 'user_active') else True
+    
+    print("Datos a insertar:", data)  # Verificación antes de insertar
+    
+    result = db.db["users"].insert_one(data)
+    user.id = str(result.inserted_id)
     return user
 
 

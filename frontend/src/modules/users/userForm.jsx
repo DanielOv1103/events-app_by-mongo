@@ -3,7 +3,7 @@ import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
+import { Checkbox } from "@/components/ui/checkbox" // Cambiamos Switch por Checkbox
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function UserForm({
@@ -20,25 +20,25 @@ export default function UserForm({
         image: user?.image || "",
         email: user?.email || "",
         role: user?.role || "Usuario",
-        active: user?.active || false,
+        user_active: user?.user_active ?? true, // Cambiado a user_active
         id: user?.id || null,
-        created_day: user?.created_day || new Date().toISOString(), // Auto-generar si es nuevo
-        updated_day: new Date().toISOString() // Siempre la fecha actual
+        created_day: user?.created_day || new Date().toISOString(),
+        updated_day: new Date().toISOString()
     })
+
 
     if (!isOpen) return null
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+        const { name, value, type, checked } = e.target
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }))
     }
 
     const handleSelectChange = (value) => {
         setFormData(prev => ({ ...prev, role: value }))
-    }
-
-    const handleSwitchChange = (checked) => {
-        setFormData(prev => ({ ...prev, active: checked }))
     }
 
     const handleSubmit = (e) => {
@@ -64,7 +64,7 @@ export default function UserForm({
 
                 <form onSubmit={handleSubmit} className="p-4 space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Nombre </Label>
+                        <Label htmlFor="name">Nombre</Label>
                         <Input
                             id="name"
                             name="name"
@@ -124,26 +124,27 @@ export default function UserForm({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="image">URL de Imagen</Label> {/* Cambiado de avatar a image */}
+                        <Label htmlFor="image">URL de Imagen</Label>
                         <Input
-                            id="image"  // Cambiado de avatar a image
-                            name="image"  // Cambiado de avatar a image
+                            id="image"
+                            name="image"
                             value={formData.image}
                             onChange={handleChange}
                             placeholder="https://ejemplo.com/imagen.jpg"
                         />
                     </div>
 
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <Label htmlFor="active" className="text-sm font-medium leading-none cursor-pointer">
-                            Usuario activo
-                        </Label>
-                        <Switch
-                            id="active"
-                            checked={formData.active}
-                            onCheckedChange={handleSwitchChange}
-                            className="data-[state=checked]:bg-purple-600 data-[state=unchecked]:bg-gray-200"
+                    <div className="flex items-center space-x-2 p-4 rounded-lg">
+                        <Checkbox
+                            id="user_active"
+                            name="user_active"
+                            checked={formData.user_active}
+                            onCheckedChange={(checked) => setFormData(prev => ({
+                                ...prev,
+                                user_active: checked
+                            }))}
                         />
+                        <Label htmlFor="user_active">Usuario activo</Label>
                     </div>
 
                     <div className="flex justify-end space-x-2 pt-2">

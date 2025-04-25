@@ -76,7 +76,7 @@ export default function UsersComponent() {
         ...user,
         id: user._id || user.id,
         image: user.image || "",
-        status: user.active ? "Activo" : "Inactivo",
+        status: user.user_active !== false ? "Activo" : "Inactivo", // Considera true por defecto
         role: user.role || "user"
     }))
 
@@ -132,24 +132,54 @@ export default function UsersComponent() {
     const handleBulkRoleChange = async (newRole) => {
         setLoading(true);
         try {
-            await Promise.all(
-                selectedUsers.map(id => {
-                    const user = users.find(u => u.id === id);
+            // Si hay un ID específico, solo actualiza ese usuario
+            if (selectedUsers.length === 1) {
+                const userId = selectedUsers[0];
+                const userData = users.find(u => (u._id || u.id) === userId);
+                if (userData) {
                     const updatePayload = {
-                        ...user,
+                        ...userData,
                         role: newRole,
                         updated_day: new Date().toISOString()
                     };
-                    console.log('Update payload:', updatePayload); // Add this line
-                    return userServices.updateUser(id, updatePayload);
-                })
-            );
-            // ... rest of your code
+                    await userServices.updateUser(userId, updatePayload);
+                }
+            } else {
+                // Actualización masiva
+                await Promise.all(
+                    selectedUsers.map(userId => {
+                        const userData = users.find(u => (u._id || u.id) === userId);
+                        if (!userData) return null;
+    
+                        const updatePayload = {
+                            ...userData,
+                            role: newRole,
+                            updated_day: new Date().toISOString()
+                        };
+    
+                        return userServices.updateUser(userId, updatePayload);
+                    })
+                );
+            }
+            
+            await fetchUsers();
+            setSuccess(selectedUsers.length === 1 
+                ? "Rol actualizado correctamente." 
+                : "Roles actualizados correctamente.");
+            setSelectedUsers([]);
+            setIsRoleEditorOpen(false);
         } catch (err) {
-            console.error('Error details:', err.response?.data?.detail); // Log detailed errors
-            // ... rest of error handling
+            console.error('Error details:', err.response?.data?.detail || err.message);
+            setError(selectedUsers.length === 1 
+                ? "Hubo un error al actualizar el rol." 
+                : "Hubo un error al actualizar los roles.");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+    
+    
+
 
     const handleSaveUser = async (userData) => {
         try {
@@ -229,6 +259,7 @@ export default function UsersComponent() {
             {isRoleEditorOpen && (
                 <RoleEditorModal
                     selectedCount={selectedUsers.length}
+                    selectedUserId={selectedUsers.length === 1 ? selectedUsers[0] : null}
                     onChangeRole={handleBulkRoleChange}
                     onCancel={() => setIsRoleEditorOpen(false)}
                 />

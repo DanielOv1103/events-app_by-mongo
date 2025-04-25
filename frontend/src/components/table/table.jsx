@@ -193,7 +193,7 @@ const CustomTable = ({
                                                         <span className="sr-only">Abrir menú</span>
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
+                                                <DropdownMenuContent className="bg-white border-none" align="end">
                                                     <DropdownMenuItem onClick={() => onEdit?.(item)}>
                                                         Editar
                                                     </DropdownMenuItem>

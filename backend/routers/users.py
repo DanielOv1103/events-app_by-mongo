@@ -24,10 +24,9 @@ def delete_user_endpoint(user_id: str):
 
 @router.post("/")
 def create_user_endpoint(user: User):
-    print(user.dict())  
     return create_user(user)
 
-@router.put("/{user_id}")
+@router.patch("/{user_id}")
 async def update_user_endpoint(user_id: str, user_data: User):
     user_dict = user_data.dict()
     user_dict["_id"] = user_id

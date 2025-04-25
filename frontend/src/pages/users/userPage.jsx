@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { act, useState } from "react";
 import { UsersComponent } from "../../modules/index";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
@@ -24,19 +24,24 @@ export default function UserPage() {
         try {
             const completeData = {
                 ...userData,
-                // Asegurar los campos requeridos
                 last_name: userData.last_name || '',
-                name_user: userData.name_user || userData.email.split('@')[0], // Puedes generar uno basado en email
+                name_user: userData.name_user || userData.email.split('@')[0],
                 created_day: userData.created_day || new Date().toISOString(),
+                user_active: Boolean(userData.user_active), // Cambiado a user_active
                 updated_day: new Date().toISOString()
             };
 
-            await userServices.createUser(completeData);
-            setSuccess('Usuario creado correctamente');
+            if (isCreating) {
+                await userServices.createUser(completeData);
+                setSuccess('Usuario creado correctamente');
+            } else {
+                await userServices.updateUser(userData.id, completeData);
+                setSuccess('Usuario actualizado correctamente');
+            }
+
             setIsFormOpen(false);
-            
         } catch (err) {
-            setError(err.message);
+            setError(err.response?.data?.message || err.message || 'Error al guardar el usuario');
         } finally {
             setLoading(false);
         }
