@@ -94,9 +94,9 @@ export default function CreateEvent({ event, onSave, onCancel }) {
 
           <div className="space-y-2">
             <Label htmlFor="category">Categoría</Label>
-            <Select value={formData.category} onValueChange={handleSelectChange}>
+            <Select key={formData.category} value={formData.category}  onValueChange={handleSelectChange}>
               <SelectTrigger>
-                <SelectValue placeholder="Selecciona una categoría" />
+                <SelectValue placeholder={formData.category || "Selecciona una categoría"}/>
               </SelectTrigger>
               <SelectContent className="bg-white">
                 <SelectItem value="Conferencia">Conferencia</SelectItem>

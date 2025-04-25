@@ -23,7 +23,8 @@ const CardEvents = ({ event, onEdit, onDelete }) => {
 
     const startTimeStr = startDate ? startDate.toLocaleTimeString() : 'Hora no disponible';
     const endTimeStr = endDate ? endDate.toLocaleTimeString() : 'Hora no disponible';
-
+    const url = event.image ? event.image : '/placeholder.svg?height=32&width=32'
+    console.log(url)
     return (
         <>
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group border-none">

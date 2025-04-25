@@ -1,4 +1,4 @@
-import EventsComponent from "../pages/events/events-componets"
+import EventsComponent from "../../pages/events/events-componets"
 
 export default function Events() {
     return (
