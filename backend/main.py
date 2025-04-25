@@ -4,6 +4,9 @@ from routers.auth import router as auth_router
 from routers.events import router as events_router
 from routers.users import router as user_router
 from routers.receta import router as receta_router
+from routers.products import router as product_router
+from routers.music import router as music_router
+from routers.filmes import router as filme_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -38,3 +41,6 @@ app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(events_router, prefix="/events", tags=["events"])
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(receta_router, prefix="/recetas", tags=["recetas"])
+app.include_router(filme_router, prefix="/filmes", tags=["filmes"])
+app.include_router(music_router, prefix="/music", tags=["music"])
+app.include_router(product_router, prefix="/productos", tags=["productos"])
