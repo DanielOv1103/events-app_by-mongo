@@ -3,6 +3,7 @@ from db import connect_to_mongo, close_mongo_connection
 from routers.auth import router as auth_router
 from routers.events import router as events_router
 from routers.users import router as user_router
+from routers.receta import router as receta_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -36,3 +37,4 @@ app.add_event_handler("shutdown", shutdown_db_client)
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(events_router, prefix="/events", tags=["events"])
 app.include_router(user_router, prefix="/users", tags=["users"])
+app.include_router(receta_router, prefix="/recetas", tags=["recetas"])
