@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models.city import City 
-from services.city_service import create_city, get_city, list_cities, delete_city, update_city
+from services.city_services import create_city, get_city, list_cities, delete_city, update_city
 
 router = APIRouter()
 
