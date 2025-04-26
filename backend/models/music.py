@@ -10,6 +10,7 @@ class Music(BaseModel):
     genre: str
     duration: str
     discography: str
+    music_yt: str
     image: Optional[str] = None
     
     class Config:
