@@ -11,6 +11,7 @@ from routers.providers import router as provider_router
 from routers.citys import router as city_router
 from routers.restaurants import router as restaurant_router
 from routers.airports import router as airport_router
+from routers.cinemas import router as cinema_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -52,3 +53,4 @@ app.include_router(provider_router, prefix="/providers", tags=["providers"])
 app.include_router(city_router, prefix="/ciudades", tags=["ciudades"])
 app.include_router(restaurant_router, prefix="/restaurantes", tags=["restaurantes"])
 app.include_router(airport_router, prefix="/aeropuertos", tags=["aeropuertos"])
+app.include_router(cinema_router, prefix="/cines", tags=["cines"])
