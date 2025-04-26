@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { Menu, X, Calendar, Users, Bell, Music } from "lucide-react"
+import { Menu, X, Calendar, Users, Bell, Music, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -21,6 +21,7 @@ export default function Navbar() {
         { name: "Eventos", path: "/events", icon: <Calendar className="h-4 w-4 mr-2" /> },
         { name: "Usuarios", path: "/users", icon: <Users className="h-4 w-4 mr-2" /> },
         { name: "Música", path: "/musica", icon: <Music className="h-4 w-4 mr-2" /> },
+        { name: "Otros", path: "/otros", icon: <Shield className="h-4 w-4 mr-2" /> },
     ]
 
     const isActive = (path) => {

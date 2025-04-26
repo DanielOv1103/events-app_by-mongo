@@ -4,6 +4,7 @@ import Home from './app/Home'          // listEvents y grid de cards
 import Events from './app/events/page'
 import Users from './app/users/users'
 import Music from './app/music/page'
+import Otro from './app/otro/page'
 import { NavBar } from "@/modules/index"
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/users" element={<Users />} />
           <Route path="/musica" element={<Music />} />
+          <Route path="/otros" element={<Otro />} />
         </Routes>
       </div>
     </BrowserRouter>
